@@ -22,7 +22,7 @@ bedrock_client = None
 MODEL_ID = os.environ.get("MODEL_ID", "us.amazon.nova-lite-v1:0")
 
 #FastAPI
-FastAPI_generate = "https://9701-34-124-240-253.ngrok-free.app/generate"
+FastAPI_generate = "https://2fc4-34-125-39-242.ngrok-free.app/generate"
 
 def lambda_handler(event, context):
     try:
@@ -110,16 +110,20 @@ def lambda_handler(event, context):
         headers = {
             'Content-Type': 'application/json',
         }
-        req = urllib.request.Request(url, json.dumps(request_payload).encode(), headers)
+        req = urllib.request.Request(url, json.dumps(request_payload).encode("utf-8"), headers)
         with urllib.request.urlopen(req) as res:
             response = res.read()
+        response = response
+        print(response)
+        print(f"レスポンス={response[0]}")
+        
         #FastAPI改造ここまで
         
         # レスポンスを解析
         """ response_body = json.loads(response['body'].read())
         print("Bedrock response:", json.dumps(response_body, default=str)) """
         #レスポンス解析FastAPIバージョン
-        """ response_body = json.loads(response['body'].read())
+        """ response_body = json.loads(response['generated_text'].read())
         print("FastAPI custom response:", json.dumps(response_body, default=str)) """
         #解析ここまで
         
@@ -130,8 +134,8 @@ def lambda_handler(event, context):
         """ # アシスタントの応答を取得
         assistant_response = response_body['output']['message']['content'][0]['text'] """
 
-        assistant_response = response["generated_text"]#ここにFastAPIのレスポンスのメッセージを入れる
-        
+        #assistant_response = response["generated_text"]#ここにFastAPIのレスポンスのメッセージを入れる
+        assistant_response = response[0]
         """ # アシスタントの応答を会話履歴に追加
         messages.append({
             "role": "assistant",
