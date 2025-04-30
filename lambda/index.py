@@ -22,7 +22,7 @@ bedrock_client = None
 MODEL_ID = os.environ.get("MODEL_ID", "us.amazon.nova-lite-v1:0")
 
 #FastAPI
-FastAPI_generate = "https://2fc4-34-125-39-242.ngrok-free.app/generate"
+FastAPI_generate = "https://c1e8-34-118-243-99.ngrok-free.app/generate"
 
 def lambda_handler(event, context):
     try:
@@ -137,7 +137,7 @@ def lambda_handler(event, context):
         assistant_response = response_body['output']['message']['content'][0]['text'] """
 
         #assistant_response = response["generated_text"]#ここにFastAPIのレスポンスのメッセージを入れる
-        assistant_response = response[0]
+        assistant_response = response
         """ # アシスタントの応答を会話履歴に追加
         messages.append({
             "role": "assistant",
