@@ -113,9 +113,11 @@ def lambda_handler(event, context):
         req = urllib.request.Request(url, json.dumps(request_payload).encode("utf-8"), headers)
         with urllib.request.urlopen(req) as res:
             response = res.read()
-        response = response
-        print(response)
-        print(f"レスポンス={response[0]}")
+        response = response.decode("utf-8")
+        response = json.loads(response)
+        response = response["generated_text"]
+        
+        print(f"レスポンス={response}")
         
         #FastAPI改造ここまで
         
